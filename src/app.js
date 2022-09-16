@@ -20,9 +20,11 @@ function displayTemperature(response){
     let descriptionElement = document.querySelector("#description");
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
-        let dateElement = document.querySelector("#date");
-  let iconElement = document.querySelector("#icon");
-    temperatureElement.innerHTML = Math.round(response.data.main.temp);
+    let dateElement = document.querySelector("#date");
+    let iconElement = document.querySelector("#icon");
+
+    celsiusTemperature = response.data.main.temp;
+    temperatureElement.innerHTML = Math.round(celsiusTemperature);
     cityElement.innerHTML = response.data.name;
      descriptionElement.innerHTML = response.data.weather[0].description;
       humidityElement.innerHTML = response.data.main.humidity;
@@ -43,7 +45,33 @@ function handleSubmith(event) {
  search(cityInputElement.value);
 }
 
-search("Lisbon");
+function displayFarenheitTemperature(event) {
+  event.preventDefault();
+ 
+  let temperatureElement = document.querySelector("#temperature");
+  celsiusLink.classList.remove("active");
+  farenheitLink.classList.add("active");
+   let farenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
+  temperatureElement.innerHTML = Math.round(farenheitTemperature);
+}
+
+function displayCelsiusTemperature(event) {
+  event.preventDefault();
+   celsiusLink.classList.add("active");
+  farenheitLink.classList.remove("active");
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+}
+
+let celsiusTemperature = null;
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmith);
+
+let farenheitLink = document.querySelector("#farenheit-link");
+farenheitLink.addEventListener("click", displayFarenheitTemperature);
+
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", displayCelsiusTemperature);
+
+search("Lisbon");
